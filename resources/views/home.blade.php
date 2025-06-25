@@ -247,49 +247,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    {{-- Sales Agregat --}}
-    <div class="row">
-        <div class="col-lg-12 mb-2">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center">
-                        <h6 class="m-0 font-weight-bold text-primary mb-3 mb-md-0">
-                            Overall Performance
-                        </h6>
-                        <div class="d-flex flex-wrap justify-content-start justify-content-md-end align-items-center">
-                            <div class="btn-group" role="group" aria-label="Zoom controls for Agregat Chart">
-                                <button id="agregatZoomInBtn" class="btn btn-sm btn-outline-secondary" title="Zoom In">
-                                    <i class="fas fa-search-plus"></i>
-                                </button>
-                                <button id="agregatZoomOutBtn" class="btn btn-sm btn-outline-secondary" title="Zoom Out">
-                                    <i class="fas fa-search-minus"></i>
-                                </button>
-                                <button id="agregatResetZoomBtn" class="btn btn-sm btn-outline-secondary"
-                                    title="Reset Zoom">
-                                    <i class="fas fa-compress-arrows-alt"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-body" wire:ignore>
-                    <div style="position: relative; width: 100%; height: 500px;">
-                        <canvas id="agregatChart"></canvas>
-                    </div>
-                </div>
-
-                <div class="card-footer">
-                    <small class="text-muted">
-                        Showing data for Agregat Store │
-                        Last updated:
-                        {{ $lastUpdateAgregat ?? 'N/A' }}
-                    </small>
-                </div>
-            </div>
-        </div>
 
         {{-- Analisis Sentimen --}}
         <div class="col-lg-12 mb-2">

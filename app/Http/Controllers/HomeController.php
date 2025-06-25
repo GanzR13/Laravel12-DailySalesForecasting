@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\SalesData;
 use App\Models\SentimenData;
-use App\Models\SalesAgregatData;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -34,28 +33,7 @@ class HomeController extends Controller
         $lastUpdatedSales = 'T/A';
         $lastUpdatedDateOnlySales = 'T/A';
         $totalSentimenComments = SentimenData::count();
-        $salesAgregatData = SalesAgregatData::orderBy('date', 'asc')->get();
-        $agregatLabels = [];
-        $actualAgregatData = [];
-        $forecastAgregatData = [];
-        // The date from which data is considered a forecast.
-        $forecastStartDate = Carbon::parse('2012-10-26');
 
-        foreach ($salesAgregatData as $item) {
-            $currentDate = Carbon::parse($item->date);
-            $agregatLabels[] = $currentDate->translatedFormat('d M Y');
-
-            // Split the data into 'actual' and 'forecast' based on the date
-            if ($currentDate->gte($forecastStartDate)) {
-                // Data on or after this date is considered forecast data
-                $actualAgregatData[] = null; // No actual value for this period
-                $forecastAgregatData[] = (float)$item->actual; // REVERTED: Use the 'actual' column directly
-            } else {
-                // Data before this date is considered actual historical data
-                $actualAgregatData[] = (float)$item->actual; // REVERTED: Use the 'actual' column directly
-                $forecastAgregatData[] = null; // No forecast value for this period
-            }
-        }
 
         $overallLastDailyDateString = SalesData::where('dept', $selectedDept)
             ->where('store', $selectedStore)
@@ -165,12 +143,6 @@ class HomeController extends Controller
             $lastUpdatedSentimenDisplay = Carbon::parse($lastSentimenUpdateTimestamp)->translatedFormat('d F Y H:i');
         }
 
-        $lastUpdateAgregat = 'T/A';
-        $lastAgregatUpdateTimestamp = SalesAgregatData::max('updated_at');
-        if ($lastAgregatUpdateTimestamp) {
-            $lastUpdateAgregat = Carbon::parse($lastAgregatUpdateTimestamp)->translatedFormat('d F Y H:i');
-        }
-
         $sentimentDonutLabels = [];
         $sentimentDonutDataValues = [];
         $minWordLength = 3;
@@ -251,11 +223,6 @@ class HomeController extends Controller
             'sentimentDonutLabels' => $sentimentDonutLabels,
             'sentimentDonutDataValues' => $sentimentDonutDataValues,
             'totalSentimenComments' => $totalSentimenComments,
-            // Aggregate Sales Chart Data
-            'agregatLabels' => $agregatLabels,
-            'actualAgregatData' => $actualAgregatData,
-            'forecastAgregatData' => $forecastAgregatData,
-            'lastUpdateAgregat' => $lastUpdateAgregat,
         ]);
     }
 
